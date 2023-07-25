@@ -1,0 +1,31 @@
+import stripe
+
+# Set your Stripe API secret key
+stripe.api_key = 'YOUR_STRIPE_SECRET_KEY'
+
+def create_payment_intent(amount, currency='usd'):
+    try:
+        # Create a payment intent with the specified amount and currency
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency
+        )
+        return intent
+    except stripe.error.StripeError as e:
+        # Handle any errors that occur during the API call
+        print(f"Error: {e}")
+        return None
+
+# Example usage:
+if __name__ == "__main__":
+    # Replace 'YOUR_STRIPE_SECRET_KEY' with your actual Stripe API secret key
+    stripe.api_key = 'YOUR_STRIPE_SECRET_KEY'
+
+    # Replace '1000' with the amount (in cents) you want to charge
+    amount = 1000
+
+    intent = create_payment_intent(amount)
+
+    if intent:
+        # Print the client secret, which will be used on the client-side to complete the payment
+        print(f"Client Secret: {intent.client_secret}")
